@@ -61,16 +61,15 @@ public class SumOfNumbers {
         }
 
         powerSet = findPowerSet(arr, i - 1);
-        int item = arr[i];
+        int nextInt = arr[i];
         ArrayList<ArrayList<Integer>> moreSubsets = new ArrayList<ArrayList<Integer>>();
 
-        for (ArrayList<Integer>subset : powerSet) {
+        for (ArrayList<Integer> subset : powerSet) {
             ArrayList<Integer> newSubset = new ArrayList<Integer>();
             newSubset.addAll(subset);
-            newSubset.add(item);
-            // subset.add(item); ---> WRONG, doing this will update the PowerSet
+            newSubset.add(nextInt);
+            // subset.add(nextInt); ---> WRONG, doing this will update the PowerSet
             moreSubsets.add(newSubset);
-            moreSubsets.add(subset);
         }
         powerSet.addAll(moreSubsets);
 
