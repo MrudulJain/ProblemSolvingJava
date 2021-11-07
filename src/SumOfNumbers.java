@@ -40,13 +40,43 @@ public class SumOfNumbers {
         System.out.println("Enter Cardinality of set: ");
         c = scanner.nextInt();
         // INPUT OVER
+        System.out.printf("Enter your choice: \n1.Brute Force \n2.PowerSet \n3.Optimized \n");
+        int choice = scanner.nextInt();
+        ArrayList<ArrayList<Integer>> result;
+        switch (choice)
+        {
+            case 1:
+                boolean b = bruteForce(arr, targetVal, c);
+                break;
+            case 2:
+                int i = arr.length - 1;
+                result = findPowerSet(arr, i);
+                System.out.println("PowerSet is: " +result);
+                result = returnCheckSum(result, targetVal, c);
+                System.out.println("The subSets of cardinality \"" +c+ "\" whose sum = " +targetVal+ " are: ");
+                System.out.println(result);
+                break;
+            case 3:
+                break;
+            default:
+                System.out.println("Enter correct Option");
+                break;
+        }
+    }
 
-        int i = arr.length - 1;
-        ArrayList<ArrayList<Integer>> result = findPowerSet(arr, i);
-        System.out.println("PowerSet is: " +result);
-        result = returnCheckSum(result, targetVal, c);
-        System.out.println("The subSets of cardinality \"" +c+ "\" whose sum = " +targetVal+ " are: ");
-        System.out.println(result);
+    public static boolean bruteForce (int[] arr, int targetVal , int c)
+    {
+        ArrayList<ArrayList<Integer>> output;
+        for (int i = 0; i < arr.length - c + 1; i++) // taking "c" elements at a time
+        {
+            int currentSum = 0;
+            for (int j = 0; j < c; j++)
+                currentSum = currentSum + arr[i + j];
+
+            if (currentSum == targetVal)
+                return true;
+        }
+        return false;
     }
 
     public static ArrayList<ArrayList<Integer>> findPowerSet(int[] arr, int i)
