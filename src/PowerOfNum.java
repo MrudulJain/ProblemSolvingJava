@@ -28,7 +28,7 @@ public class PowerOfNum {
                 System.out.println(num + " raised to the power " +exp+ " is: " +result);
                 break;
             case 3:
-                 double res = inbuiltFun(num, exp);
+                double res = inbuiltFun(num, exp);
                 System.out.println(num + " raised to the power " +exp+ " is: " +res);
                 break;
             default:
