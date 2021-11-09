@@ -40,23 +40,27 @@ public class SumOfNumbers {
         System.out.println("Enter Cardinality of set: ");
         c = scanner.nextInt();
         // INPUT OVER
-        System.out.printf("Enter your choice: \n1.Brute Force \n2.PowerSet \n3.Optimized \n");
+
+        System.out.printf("Enter your choice: \n1.Brute Force \n2.Optimized \n");
         int choice = scanner.nextInt();
         ArrayList<ArrayList<Integer>> result;
         switch (choice)
         {
             case 1:
-                boolean b = bruteForce(arr, targetVal, c);
-                break;
-            case 2:
                 int i = arr.length - 1;
-                result = findPowerSet(arr, i);
+                result = findPowerSet(arr, i, c);
                 System.out.println("PowerSet is: " +result);
                 result = returnCheckSum(result, targetVal, c);
                 System.out.println("The subSets of cardinality \"" +c+ "\" whose sum = " +targetVal+ " are: ");
                 System.out.println(result);
                 break;
-            case 3:
+            case 2:
+                int len = arr.length - 1;
+                result = optimizedSol(arr, len, c, targetVal);
+                System.out.println("Optimized PowerSet is: " + result);
+                System.out.println("The subSets of cardinality \"" +c+ "\" whose sum = " +targetVal+ " are: ");
+                result = returnCheckSum(result, targetVal, c);
+                System.out.println(result);
                 break;
             default:
                 System.out.println("Enter correct Option");
@@ -64,22 +68,7 @@ public class SumOfNumbers {
         }
     }
 
-    public static boolean bruteForce (int[] arr, int targetVal , int c)
-    {
-        ArrayList<ArrayList<Integer>> output;
-        for (int i = 0; i < arr.length - c + 1; i++) // taking "c" elements at a time
-        {
-            int currentSum = 0;
-            for (int j = 0; j < c; j++)
-                currentSum = currentSum + arr[i + j];
-
-            if (currentSum == targetVal)
-                return true;
-        }
-        return false;
-    }
-
-    public static ArrayList<ArrayList<Integer>> findPowerSet(int[] arr, int i)
+    public static ArrayList<ArrayList<Integer>> findPowerSet(int[] arr, int i, int c)
     {
         ArrayList<ArrayList<Integer>> powerSet;
 
@@ -90,7 +79,7 @@ public class SumOfNumbers {
             return powerSet;
         }
 
-        powerSet = findPowerSet(arr, i - 1);
+        powerSet = findPowerSet(arr, i - 1, c);
         int nextInt = arr[i];
         ArrayList<ArrayList<Integer>> moreSubsets = new ArrayList<ArrayList<Integer>>();
 
@@ -122,6 +111,35 @@ public class SumOfNumbers {
                 cSets.add(subSet);
         }
         return cSets;
+    }
+
+    public static ArrayList<ArrayList<Integer>> optimizedSol(int[] arr, int i, int c, int targetVal)
+    {
+        ArrayList<ArrayList<Integer>> finalSet;
+
+        if(i < 0) // this will execute only once when i = -1
+        {
+            finalSet = new ArrayList<ArrayList<Integer>>();
+            finalSet.add(new ArrayList<Integer>());
+            return finalSet;
+        }
+
+        finalSet = optimizedSol(arr, i - 1, c, targetVal);
+        int nextInt = arr[i];
+        ArrayList<ArrayList<Integer>> moreSubsets = new ArrayList<ArrayList<Integer>>();
+
+        for (ArrayList<Integer> subset : finalSet) {
+            // OPTIMIZATION : We are only adding those sets (to finalSet) whose cardinality is less than or equal to c and ignoring others
+            // so, we are checking if current size of subset + 1(because we will add nextInt to it) is greater than c or not
+            if (subset.size()+1 > c)
+                continue;
+            ArrayList<Integer> newSubset = new ArrayList<Integer>();
+            newSubset.addAll(subset);
+            newSubset.add(nextInt);
+            moreSubsets.add(newSubset); // can't directly add to finalSet otherwise for-loop condition will get updated
+        }
+        finalSet.addAll(moreSubsets);
+        return finalSet;
     }
 }
 
