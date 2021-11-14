@@ -9,7 +9,7 @@ public class MatMult {
     }
 
     public static void acceptInput() {
-        int[][] m1, m2, m3;
+        int[][] m1, m2;
         int r1, c1, r2, c2;
         Scanner scanner = new Scanner(System.in);
 
@@ -26,7 +26,6 @@ public class MatMult {
 
         m1 = new int[r1][c1];
         m2 = new int[r2][c2];
-        m3 = new int[r1][c2];
 
         System.out.println("Enter elements of first matrix");
         for (int i=0; i < r1; i++) {
@@ -48,19 +47,22 @@ public class MatMult {
         printMatrix(m1);
         System.out.println("\nSecond matrix is: ");
         printMatrix(m2);
-        matmult(m1, m2, m3);
+        matMult(m1, m2);
     }
 
-    public static void matmult(int[][] m1, int[][] m2, int[][] m3)
+    public static int[][] matMult(int[][] m1, int[][] m2)
     {
+        int[][] resultant = new int[m1.length][m2[0].length];
         for (int i =0; i< m1.length; i++)
             for (int j =0; j < m2[0].length; j++)
                 for (int k = 0; k < m1[0].length; k++)  // m1[0].len == number of cols in first matrix = no of rows in 2nd matrix
-                    m3[i][j] += m1[i][k] * m2[k][j];
+                    resultant[i][j] += m1[i][k] * m2[k][j];
 
-        System.out.println("\nResultant matrix is: ");
-        printMatrix(m3);
+        System.out.println("The multiplication of both matrices is: ");
+        printMatrix(resultant);
+        return resultant;
     }
+
 
     public static void printMatrix(int[][] matrix)
     {
